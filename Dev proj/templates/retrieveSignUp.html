@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Account Infomation{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Account Infomation</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no accounts.</p>
+  {% elif count == 1 %}
+  <p>There is 1 account.</p>
+  {% else %}
+  <p>There are {{ count }} accounts.</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Account ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Mobile Number</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for signup in signups_list %}
+        <tr>
+            <td>{{ signup.get_account_id() }}</td>
+            <td>{{ signup.get_first_name() }}</td>
+            <td>{{ signup.get_last_name() }}</td>
+            <td>{{ signup.get_mobile_no() }}</td>
+            <td>{{ signup.get_email() }}</td>
+            <td><a href="/updateSignUp/{{signup.get_account_id()}}" class="btn btn-warning">Update</a></td>
+            <td>
+                <form action="{{url_for('delete_signup', id=signup.get_account_id())}}" method="POST">
+<!-- Button to Open the Modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{signup.get_account_id()}}">
+  Delete
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal_{{signup.get_account_id()}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Are you sure you want to delete {{signup.get_first_name()}} {{signup.get_last_name()}}?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </form>
+        </td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
